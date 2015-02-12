@@ -1,0 +1,87 @@
+<?php
+/**
+ * @file
+ * pdfcrowd.module
+ *
+ * How to use it?
+ * 1. Be sure that in libraries folder (e.x. sites/all/libraries) you have
+ *    pdfcrowd/pdfcrowd.php file.
+ * 2. Enable module.
+ * 3. Visit admin/config/services/pdfcrowd and provide user data.
+ * 4. pdfcrowd_load_library() will return new PDFCrowd object if library exists
+ *    or FALSE if not.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function pdfcrowd_menu() {
+
+  $items['admin/config/services/pdfcrowd'] = array(
+    'title' => 'PDF Crowd settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('pdfcrowd_settings_form'),
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_libraries_info().
+ */
+function pdfcrowd_libraries_info() {
+  $libraries['pdfcrowd'] = array(
+    'title' => 'PDF Crowd',
+    'vendor url' => 'https://github.com/pdfcrowd/pdfcrowd-php',
+    'download url' => 'https://github.com/pdfcrowd/pdfcrowd-php/archive/master.zip',
+    'version callback' => 'pdfcrowd_version_callback',
+    'files' => array(
+      'php' => array(
+        'pdfcrowd.php',
+      ),
+    ),
+  );
+
+  return $libraries;
+}
+
+/**
+ * Don't check version yet.
+ */
+function pdfcrowd_version_callback() {
+  return TRUE;
+}
+
+/**
+ * Return $library object if library exists or FALSE if not.
+ */
+function pdfcrowd_load_library() {
+  if (($library = libraries_load('pdfcrowd')) && !empty($library['loaded'])) {
+    // Load API data.
+    $client = new Pdfcrowd(variable_get('pdfcrowd_username', ''), variable_get('pdfcrowd_apikey', ''));
+
+    return $client;
+  }
+  return FALSE;
+}
+
+/**
+ * Module settings form.
+ */
+function pdfcrowd_settings_form($form, &$form_state) {
+  // Username textfield.
+  $form['pdfcrowd_username'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Username'),
+    '#default_value' => variable_get('pdfcrowd_username', ''),
+  );
+  // API Key textfield.
+  $form['pdfcrowd_apikey'] = array(
+    '#type' => 'textfield',
+    '#title' => t('API Key'),
+    '#default_value' => variable_get('pdfcrowd_apikey', ''),
+  );
+  return system_settings_form($form);
+}

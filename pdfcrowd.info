@@ -1,0 +1,7 @@
+name = PDFCrowd
+description = This modules is just a wrapper for easy access to PDF Crowd REST API
+core = 7.x
+
+dependencies[] = libraries
+
+php = 5
