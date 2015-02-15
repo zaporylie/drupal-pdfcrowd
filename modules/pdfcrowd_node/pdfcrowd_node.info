@@ -1,0 +1,5 @@
+name = PDFCrowd node
+description = Transform node into PDF file.
+core = 7.x
+
+dependencies[] = pdfcrowd

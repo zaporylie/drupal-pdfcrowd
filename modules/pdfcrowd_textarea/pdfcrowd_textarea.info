@@ -1,0 +1,5 @@
+name = PDFCrowd textarea
+description = Place html in textarea and transform it into PDF file.
+core = 7.x
+
+dependencies[] = pdfcrowd
