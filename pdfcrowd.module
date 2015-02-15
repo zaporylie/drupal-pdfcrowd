@@ -35,7 +35,7 @@ function pdfcrowd_libraries_info() {
   $libraries['pdfcrowd'] = array(
     'title' => 'PDF Crowd',
     'vendor url' => 'https://github.com/pdfcrowd/pdfcrowd-php',
-    'download url' => 'https://github.com/pdfcrowd/pdfcrowd-php/archive/master.zip',
+    'download url' => 'http://pdfcrowd.com/static/clients/php/pdfcrowd-2.7-php.zip',
     'version callback' => 'pdfcrowd_version_callback',
     'files' => array(
       'php' => array(
@@ -59,9 +59,18 @@ function pdfcrowd_version_callback() {
  */
 function pdfcrowd_load_library() {
   if (($library = libraries_load('pdfcrowd')) && !empty($library['loaded'])) {
-    // Load API data.
-    $client = new Pdfcrowd(variable_get('pdfcrowd_username', ''), variable_get('pdfcrowd_apikey', ''));
+    // Get login data from variables.
+    $username = variable_get('pdfcrowd_username', '');
+    $apikey = variable_get('pdfcrowd_apikey', '');
 
+    // Check if we have all needed data to create new Pdfcrowd object.
+    if (!$username || !$apikey) {
+      drupal_set_message(t('Missing username and/or api key. Visit <a href="@link">config page</a> and fill it with login data from pdfcrowd.com.', array('@link' => url('admin/config/services/pdfcrowd'))));
+      return FALSE;
+    }
+
+    // Load API data.
+    $client = new Pdfcrowd($username, $apikey);
     return $client;
   }
   return FALSE;
