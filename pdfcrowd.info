@@ -1,5 +1,5 @@
-name = PDFCrowd
-description = This modules is just a wrapper for easy access to PDF Crowd REST API
+name = Pdfcrowd
+description = This modules is a wrapper for Pdfcrowd REST API
 core = 7.x
 configure = admin/config/services/pdfcrowd
 

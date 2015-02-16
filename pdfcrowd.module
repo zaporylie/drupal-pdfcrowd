@@ -5,11 +5,13 @@
  *
  * How to use it?
  * 1. Be sure that in libraries folder (e.x. sites/all/libraries) you have
- *    pdfcrowd/pdfcrowd.php file.
- * 2. Enable module.
- * 3. Visit admin/config/services/pdfcrowd and provide user data.
- * 4. pdfcrowd_load_library() will return new PDFCrowd object if library exists
- *    or FALSE if not.
+ *    pdfcrowd/pdfcrowd.php file. Use drush dl-pdfcrowd if not.
+ * 2. Visit admin/config/services/pdfcrowd and provide user data.
+ * 3. Use one of custom made functions:
+ *    - pdfcrowd_load_library() will return new Pdfcrowd object if library exists
+ *    or FALSE if not,
+ *    - pdfcrowd_delivery_display() - render pdf file,
+ *    - pdfcrowd_delivery_download() - force pdf file download.
  */
 
 /**
@@ -18,12 +20,16 @@
 function pdfcrowd_menu() {
 
   $items['admin/config/services/pdfcrowd'] = array(
-    'title' => 'PDF Crowd settings',
+    'title' => 'Pdfcrowd settings',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('pdfcrowd_settings_form'),
     'access arguments' => array('administer site configuration'),
     'type' => MENU_NORMAL_ITEM,
   );
+
+  $items['admin/config/services/pdfcrowd/settings'] = array(
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+  ) + $items['admin/config/services/pdfcrowd'];
 
   return $items;
 }
@@ -33,7 +39,7 @@ function pdfcrowd_menu() {
  */
 function pdfcrowd_libraries_info() {
   $libraries['pdfcrowd'] = array(
-    'title' => 'PDF Crowd',
+    'title' => 'Pdfcrowd',
     'vendor url' => 'https://github.com/pdfcrowd/pdfcrowd-php',
     'download url' => 'http://pdfcrowd.com/static/clients/php/pdfcrowd-2.7-php.zip',
     'version callback' => 'pdfcrowd_version_callback',
@@ -93,4 +99,85 @@ function pdfcrowd_settings_form($form, &$form_state) {
     '#default_value' => variable_get('pdfcrowd_apikey', ''),
   );
   return system_settings_form($form);
+}
+
+/**
+ * Display PDF file.
+ *
+ * @param $page_callback_result
+ *   The result of a page callback. Can be one of:
+ *   - A string of HTML content.
+ *   - A renderable array of content.
+ * @param $pdf
+ *   PDFCrowd object.
+ */
+function pdfcrowd_delivery_display($page_callback_result, $pdf = array()) {
+
+  // Load PDF library if not delivered as parameter.
+  if (empty($pdf)) {
+    $pdf = pdfcrowd_load_library();
+  }
+
+  // Render document.
+  $output = $pdf->convertHtml(render($page_callback_result));
+
+  // Prepare headers.
+  $headers = array(
+    'Content-type' => 'Content-Type: application/pdf; charset=utf-8',
+    'Cache-Control' => 'max-age=0',
+    'Accept-Ranges' => 'none',
+  );
+
+  // Set headers.
+  foreach ($headers as $name => $value) {
+    drupal_add_http_header($name, $value);
+  }
+  drupal_send_headers();
+
+  // Print output.
+  print $output;
+
+  // Exit Drupal bootstrap.
+  drupal_exit();
+}
+
+/**
+ * Download PDF file.
+ *
+ * @param $page_callback_result
+ *   The result of a page callback. Can be one of:
+ *   - A string of HTML content.
+ *   - A renderable array of content.
+ * @param $pdf
+ *   PDFCrowd object.
+ */
+function pdfcrowd_delivery_download($page_callback_result, $pdf = array()) {
+
+  // Load PDF library if not delivered as parameter.
+  if (empty($pdf)) {
+    $pdf = pdfcrowd_load_library();
+  }
+
+  // Render document.
+  $output = $pdf->convertHtml(render($page_callback_result));
+
+  // Prepare headers.
+  $headers = array(
+    'Content-type' => 'Content-Type: application/pdf; charset=utf-8',
+    'Cache-Control' => 'max-age=0',
+    'Accept-Ranges' => 'none',
+    'Content-Disposition' => 'attachment; filename="download.pdf"',
+  );
+
+  // Set headers.
+  foreach ($headers as $name => $value) {
+    drupal_add_http_header($name, $value);
+  }
+  drupal_send_headers();
+
+  // Print output.
+  print $output;
+
+  // Exit Drupal bootstrap.
+  drupal_exit();
 }

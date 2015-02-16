@@ -9,7 +9,7 @@
  */
 function pdfcrowd_textarea_menu() {
   $items['admin/config/services/pdfcrowd/textarea'] = array(
-    'title' => 'PDF Crowd textarea',
+    'title' => 'Pdfcrowd textarea',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('pdfcrowd_textarea_form'),
     'access arguments' => array('administer site configuration'),
@@ -58,10 +58,6 @@ function pdfcrowd_textarea_form_submit($form, &$form_state) {
 
   $form_state['rebuild'] = TRUE;
 
-  // Prepare dates in different formats.
-  $last_modified = gmdate(DATE_RFC1123, REQUEST_TIME);
-  $etag = '"' . md5($last_modified) . '"';
-
   // Load library.
   $pdf = pdfcrowd_load_library();
 
@@ -80,31 +76,5 @@ function pdfcrowd_textarea_form_submit($form, &$form_state) {
   }
 
   // Render document.
-  $output = $pdf->convertHtml($form_state['values']['html']);
-
-  // Prepare headers.
-  $headers = array(
-    'Content-type' => 'Content-Type: application/pdf; charset=utf-8',
-    'Last-modified' => $last_modified,
-    'Etag' => $etag,
-    'Expires' => $last_modified,
-    'X-Robots-Tag' => 'noindex, follow',
-    'Pragma' => 'no-cache',
-    'Cache-Control' => 'private',
-    'Content-Transfer-Encoding' => 'binary',
-    'Content-Length' => strlen($output),
-    'Content-Disposition' => 'attachment; filename="pdfcrowd_textarea.pdf"',
-  );
-
-  // Set headers.
-  foreach ($headers as $name => $value) {
-    drupal_add_http_header($name, $value);
-  }
-  drupal_send_headers();
-
-  // Print output.
-  print $output;
-
-  // Exit Drupal bootstrap.
-  drupal_exit();
+  pdfcrowd_delivery_download($form_state['values']['html'], $pdf);
 }
