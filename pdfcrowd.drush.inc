@@ -17,7 +17,7 @@ function pdfcrowd_drush_command() {
 }
 
 /**
- * PDFCrowd PHP API download callback.
+ * Pdfcrowd PHP API download callback.
  */
 function pdfcrowd_drush_download() {
   $library = libraries_load('pdfcrowd');
@@ -26,9 +26,9 @@ function pdfcrowd_drush_download() {
 
   // Download and extract library.
   if (($tmp = drush_download_file($url)) && drush_tarball_extract($tmp, $path)) {
-    drush_log(dt('PDFCrowd PHP API has been downloaded to @path', array('@path' => $path)), 'success');
+    drush_log(dt('Pdfcrowd PHP API has been downloaded to @path', array('@path' => $path)), 'success');
   }
   else {
-    drush_log(dt('Drush was unable to download PDFCrowd PHP API to @path', array('@path' => $path)), 'error');
+    drush_log(dt('Drush was unable to download Pdfcrowd PHP API to @path', array('@path' => $path)), 'error');
   }
 }
