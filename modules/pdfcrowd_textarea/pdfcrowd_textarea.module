@@ -23,7 +23,7 @@ function pdfcrowd_textarea_menu() {
  */
 function pdfcrowd_textarea_form($form, &$form_state) {
   $form['html'] = array(
-    '#type' => 'textarea',
+    '#type' => 'text_format',
     '#title' => t('HTML code'),
     '#description' => t('Place your HTML code here.'),
     '#required' => TRUE,
@@ -55,7 +55,6 @@ function pdfcrowd_textarea_form($form, &$form_state) {
  * Submit handler for textarea form.
  */
 function pdfcrowd_textarea_form_submit($form, &$form_state) {
-
   $form_state['rebuild'] = TRUE;
 
   // Load library.
@@ -77,5 +76,6 @@ function pdfcrowd_textarea_form_submit($form, &$form_state) {
   }
 
   // Render document.
-  pdfcrowd_delivery_download(check_markup($form_state['values']['html']), $pdf);
+  $markup = check_markup($form_state['values']['html']['value'], $form_state['values']['html']['format']);
+  pdfcrowd_delivery_download($markup, $pdf);
 }
