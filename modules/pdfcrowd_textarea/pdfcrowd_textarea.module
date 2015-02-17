@@ -62,7 +62,7 @@ function pdfcrowd_textarea_form_submit($form, &$form_state) {
   $pdf = pdfcrowd_load_library();
 
   // Set default page size.
-  switch (check_markup($form_state['values']['document_size'])) {
+  switch ($form_state['values']['document_size']) {
     case 'a4_landscape':
       $pdf->setPageHeight("210mm");
       $pdf->setPageWidth("298mm");
@@ -77,5 +77,5 @@ function pdfcrowd_textarea_form_submit($form, &$form_state) {
   }
 
   // Render document.
-  pdfcrowd_delivery_download($form_state['values']['html'], $pdf);
+  pdfcrowd_delivery_download(check_markup($form_state['values']['html']), $pdf);
 }
