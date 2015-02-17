@@ -1,17 +1,10 @@
 <?php
 /**
  * @file
- * pdfcrowd.module
+ * Convert HTML to PDF with external service.
  *
- * How to use it?
- * 1. Be sure that in libraries folder (e.x. sites/all/libraries) you have
- *    pdfcrowd/pdfcrowd.php file. Use drush dl-pdfcrowd if not.
- * 2. Visit admin/config/services/pdfcrowd and provide user data.
- * 3. Use one of custom made functions:
- *    - pdfcrowd_load_library() will return new Pdfcrowd object if library exists
- *    or FALSE if not,
- *    - pdfcrowd_delivery_display() - render pdf file,
- *    - pdfcrowd_delivery_download() - force pdf file download.
+ * This Drupal module was created to help you easily transform HTML document
+ * into PDF file. You can convert URL, HTML file or custom HTML code.
  */
 
 /**
@@ -97,6 +90,7 @@ function pdfcrowd_settings_form($form, &$form_state) {
     '#type' => 'textfield',
     '#title' => t('API Key'),
     '#default_value' => variable_get('pdfcrowd_apikey', ''),
+    '#description' => t('You can find your apikey on <a href="@link">pdfcrowd.com</a>', array('@link' => 'https://pdfcrowd.com/user/account/')),
   );
   return system_settings_form($form);
 }

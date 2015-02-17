@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * pdfcrowd_textarea.module
+ * Transform custom html into PDF document.
  */
 
 /**
@@ -62,7 +62,7 @@ function pdfcrowd_textarea_form_submit($form, &$form_state) {
   $pdf = pdfcrowd_load_library();
 
   // Set default page size.
-  switch ($form_state['values']['document_size']) {
+  switch (check_markup($form_state['values']['document_size'])) {
     case 'a4_landscape':
       $pdf->setPageHeight("210mm");
       $pdf->setPageWidth("298mm");

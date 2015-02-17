@@ -1,9 +1,7 @@
 <?php
 /**
  * @file
- * pdfcrowd_node.module
- *
- * This is really simple module to present pdfcrowd module usage.
+ * This is really simple module to show how you can use pdfcrowd module.
  */
 
 /**

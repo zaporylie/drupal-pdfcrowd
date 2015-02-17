@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * pdfcrowd.drush.inc
+ * Download pdfcrowd library with drush.
  */
 
 /**
