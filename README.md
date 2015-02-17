@@ -14,9 +14,9 @@ command `drush dl-pdfcrowd` or do it manually.
 3. Go to admin/config/services/pdfcrowd and fill form with your personal data.
 You can find it on https://pdfcrowd.com/user/account/
 
-Maintainers
+Maintainer
 ==========================
-jakub@piaseccy.pl
+Jakub Piasecki (zaporylie) jakub@piaseccy.pl
 
 Sponsor
 ==========================
