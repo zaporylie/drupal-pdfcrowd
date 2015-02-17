@@ -70,7 +70,7 @@ function pdfcrowd_load_library() {
 
     // Load API data.
     $client = new Pdfcrowd($username, $apikey);
-      return $client;
+    return $client;
   }
   return FALSE;
 }
@@ -98,11 +98,11 @@ function pdfcrowd_settings_form($form, &$form_state) {
 /**
  * Display PDF file.
  *
- * @param $page_callback_result
+ * @param mixed $page_callback_result
  *   The result of a page callback. Can be one of:
  *   - A string of HTML content.
  *   - A renderable array of content.
- * @param $pdf
+ * @param object $pdf
  *   Pdfcrowd object.
  */
 function pdfcrowd_delivery_display($page_callback_result, $pdf = array()) {
@@ -138,11 +138,11 @@ function pdfcrowd_delivery_display($page_callback_result, $pdf = array()) {
 /**
  * Download PDF file.
  *
- * @param $page_callback_result
+ * @param mixed $page_callback_result
  *   The result of a page callback. Can be one of:
  *   - A string of HTML content.
  *   - A renderable array of content.
- * @param $pdf
+ * @param object $pdf
  *   Pdfcrowd object.
  */
 function pdfcrowd_delivery_download($page_callback_result, $pdf = array()) {

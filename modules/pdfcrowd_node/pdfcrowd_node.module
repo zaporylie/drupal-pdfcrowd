@@ -50,8 +50,9 @@ function pdfcrowd_node_node_view_alter(&$build) {
         case 'display':
           $build['links']['node']['#links']['node-pdfcrowd']['href'] = 'node/' . $build['#node']->nid . '/pdfcrowd';
           break;
-        default:
+
         case 'download':
+        default:
           $build['links']['node']['#links']['node-pdfcrowd']['href'] = 'node/' . $build['#node']->nid . '/pdfcrowd/download';
           break;
       }

@@ -67,6 +67,7 @@ function pdfcrowd_textarea_form_submit($form, &$form_state) {
       $pdf->setPageHeight("210mm");
       $pdf->setPageWidth("298mm");
       break;
+
     case 'a4_portrait':
     default:
       // A4 Portrait by default.
