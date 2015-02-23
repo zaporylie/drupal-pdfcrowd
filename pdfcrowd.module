@@ -113,7 +113,19 @@ function pdfcrowd_delivery_display($page_callback_result, $pdf = array()) {
   }
 
   // Render document.
-  $output = $pdf->convertHtml(render($page_callback_result));
+  try {
+    $output = $pdf->convertHtml(render($page_callback_result));
+  }
+  catch (Exception $e) {
+    drupal_set_message(t('Unable to create PDF document.'), 'error');
+    watchdog(
+      'pdfcrowd',
+      'Unable to create PDF document. Message from service: @message',
+      array('@message' => $e->getMessage()),
+      WATCHDOG_ERROR
+    );
+    drupal_goto(request_path());
+  }
 
   // Prepare headers.
   $headers = array(
@@ -153,7 +165,19 @@ function pdfcrowd_delivery_download($page_callback_result, $pdf = array()) {
   }
 
   // Render document.
-  $output = $pdf->convertHtml(render($page_callback_result));
+  try {
+    $output = $pdf->convertHtml(render($page_callback_result));
+  }
+  catch (Exception $e) {
+    drupal_set_message(t('Unable to create PDF document.'), 'error');
+    watchdog(
+      'pdfcrowd',
+      'Unable to create PDF document. Message from service: @message',
+      array('@message' => $e->getMessage()),
+      WATCHDOG_ERROR
+    );
+    drupal_goto(request_path());
+  }
 
   // Prepare headers.
   $headers = array(
