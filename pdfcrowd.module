@@ -57,6 +57,13 @@ function pdfcrowd_version_callback() {
  * Return $library object if library exists or FALSE if not.
  */
 function pdfcrowd_load_library() {
+  $pdfcrowd = &drupal_static(__FUNCTION__);
+
+  if (is_a($pdfcrowd, 'PdfCrowd')) {
+    // Use static cache.
+    return $pdfcrowd;
+  }
+
   if (($library = libraries_load('pdfcrowd')) && !empty($library['loaded'])) {
     // Get login data from variables.
     $username = variable_get('pdfcrowd_username', '');
@@ -69,8 +76,8 @@ function pdfcrowd_load_library() {
     }
 
     // Load API data.
-    $client = new Pdfcrowd($username, $apikey);
-    return $client;
+    $pdfcrowd = new Pdfcrowd($username, $apikey);
+    return $pdfcrowd;
   }
   return FALSE;
 }
@@ -144,7 +151,7 @@ function pdfcrowd_delivery_display($page_callback_result, $pdf = array()) {
   print $output;
 
   // Exit Drupal bootstrap.
-  drupal_exit();
+//  drupal_exit();
 }
 
 /**

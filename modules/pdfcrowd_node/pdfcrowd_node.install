@@ -1,0 +1,13 @@
+<?php
+/**
+ * @file
+ * Remove variables on uninstall.
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function pdfcrowd_node_uninstall() {
+  variable_del('pdfcrowd_node_view_mode');
+  variable_del('pdfcrowd_node_display_download');
+}

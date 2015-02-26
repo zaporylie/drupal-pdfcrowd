@@ -4,6 +4,18 @@ Pdfcrowd
 This Drupal module was created to help you easily transform HTML document into
 PDF file. You can convert URL, HTML file or custom HTML code.
 
+Requirements
+==========================
+
+* PHP cURL
+* Pdfcrowd PHP API library 
+  http://pdfcrowd.com/static/clients/php/pdfcrowd-2.7-php.zip
+
+Dependencies
+==========================
+
+* Libraries API
+
 Installation
 ==========================
 
